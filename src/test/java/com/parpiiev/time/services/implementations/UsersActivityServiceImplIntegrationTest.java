@@ -12,12 +12,10 @@ import com.parpiiev.time.services.interfaces.ActivityService;
 import com.parpiiev.time.services.interfaces.UsersActivityService;
 import com.parpiiev.time.utils.dto.UserDTO;
 import com.parpiiev.time.utils.dto.UsersActivityDTO;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +26,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+//@Transactional
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
 class UsersActivityServiceImplIntegrationTest {
 
@@ -45,7 +44,7 @@ class UsersActivityServiceImplIntegrationTest {
     private UsersActivityService<UsersActivityDTO> service;
 
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
 
         Category category = new Category("management");
@@ -71,12 +70,6 @@ class UsersActivityServiceImplIntegrationTest {
         repository.saveAll(usersActivitiesList);
     }
 
-//    @AfterAll
-//    void clean() {
-//        userRepository.deleteAll();
-//        categoryRepository.deleteAll();
-//        activityRepository.deleteAll();
-//    }
 
     @Test
     void testGetById() {
@@ -128,7 +121,7 @@ class UsersActivityServiceImplIntegrationTest {
     @Test
     void testGetAllById() {
         assertNotNull(service.getAllById(1));
-        assertEquals(0, service.getAllById(1).size());
+        assertEquals(2, service.getAllById(1).size());
     }
 
     @Test

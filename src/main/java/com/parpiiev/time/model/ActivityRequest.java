@@ -26,6 +26,21 @@ public class ActivityRequest {
     public ActivityRequest() {
     }
 
+    /**
+     * Constructor for tests
+     * @param request_id id of the request
+     * @param user user that sent the request
+     * @param activity activity
+     * @param status status of the request
+     */
+    public ActivityRequest(int request_id, User user,
+                           Activity activity, Status status) {
+        this.request_id = request_id;
+        this.user = user;
+        this.activity = activity;
+        this.status = status;
+    }
+
     public Integer getRequest_id() {
         return request_id;
     }

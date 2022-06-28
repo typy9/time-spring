@@ -7,6 +7,7 @@ import com.parpiiev.time.utils.dto.CategoryDTO;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@Transactional
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+//@Transactional
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
 class CategoryServiceImplIntegrationTest {
 
@@ -29,7 +31,7 @@ class CategoryServiceImplIntegrationTest {
     private CategoryService<CategoryDTO> service;
 
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         Category category = new Category("general");
         Category category1 = new Category( "administration");
@@ -40,11 +42,6 @@ class CategoryServiceImplIntegrationTest {
         categoryList.add(category2);
         repository.saveAll(categoryList);
     }
-
-//    @AfterAll
-//    void clean() {
-//        repository.deleteAll();
-//    }
 
     @Test
     void testGetById() {

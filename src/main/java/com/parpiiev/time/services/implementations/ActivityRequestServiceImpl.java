@@ -81,8 +81,8 @@ public class ActivityRequestServiceImpl implements ActivityRequestService<Activi
 
     @Override
     public void update(ActivityRequestDTO activityRequestDTO) {
-        if (activityRequestDTO.getUser_id() <=0
-                || activityRequestDTO.getActivity_id() <=0
+        if (activityRequestDTO.getUser_id() <= 0
+                || activityRequestDTO.getActivity_id() <= 0
                 || activityRequestDTO.getStatus() == null) {
 
             log.error("Invalid input data");

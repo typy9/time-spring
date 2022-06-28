@@ -3,6 +3,7 @@ package com.parpiiev.time.services.implementations;
 import com.parpiiev.time.exceptions.activity.ActivityAlreadyExistsException;
 import com.parpiiev.time.model.Activity;
 import com.parpiiev.time.exceptions.user.InvalidUserException;
+import com.parpiiev.time.model.User;
 import com.parpiiev.time.utils.projections.ActivityProjectionMapper;
 import com.parpiiev.time.repository.ActivityRepository;
 import com.parpiiev.time.services.interfaces.ActivityService;
@@ -90,21 +91,14 @@ public class ActivityServiceImpl implements ActivityService<ActivityDTO> {
 
         log.debug("Activity transformed from activity DTO : {}", activity);
 
-//        Optional<Activity> activityToUpdate = activityDao.getById(activity.getActivity_id());
-        Optional<Activity> activityToUpdate = activityRepository.findById(activity.getId());
-        log.debug("activityToUpdate is : {}", activityToUpdate);
+        Optional<Activity> activityExists = activityRepository.findById(activity.getId());
+        log.debug("activityExists is : {}", activityExists);
 
-//        ActivityDTO activityDtoToReturn = null;
-        activityRepository.updateActivityById(activityDto.getActivity_id(),
-                activityDto.getName(), activityDto.getActivity_category_id());
+        if (activityExists.isPresent()) {
 
-//        if (activityToUpdate.isPresent() &&
-//                activityDao.update(activity).isPresent()) {
-//
-//            activityDtoToReturn = dtoMapper.mapToDto(activityDao.update(activity).get());
-//            log.debug("activityDtoToReturn is : {}", activityDtoToReturn);
-//        }
-//        return Optional.ofNullable(activityDtoToReturn);
+            activityRepository.updateActivityById(activityDto.getActivity_id(),
+                    activityDto.getName(), activityDto.getActivity_category_id());
+        }
     }
 
     @Override
@@ -157,6 +151,7 @@ public class ActivityServiceImpl implements ActivityService<ActivityDTO> {
 
     @Override
     public List<Optional<ActivityDTO>> getActivityByCategory_Id(int categoryId) {
+        if(categoryId <= 0) {return null;}
         return activityRepository.getActivityByCategoryId(categoryId)
                 .stream()
                 .map(x -> x.map(dtoMapper::mapToDto))

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Data
-@Getter @Setter @NoArgsConstructor @ToString
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
 public class ActivityDTO {
 
     private int activity_id;

@@ -110,12 +110,14 @@ public class UsersActivityServiceImpl implements UsersActivityService<UsersActiv
         return true;
     }
 
+    /**
+     * Find all user's activities by User's id
+     * @param id user's id
+     * @return List of user's activities
+     */
     @Override
     public List<UsersActivityDTO> getAllById(int id) {
-//        return usersActivityDao.getAll().stream()
-//                .filter(usersActivity -> usersActivity.getUser().getId() == id)
-//                .map(dtoMapper::mapToDto)
-//                .collect(Collectors.toList());
+
         return usersActivityRepository.findAllUserRecordsById(id)
                 .stream().map(dtoMapper::mapToDto).collect(Collectors.toList());
     }
