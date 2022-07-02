@@ -6,12 +6,9 @@ import com.parpiiev.time.exceptions.category.InvalidCategoryException;
 import com.parpiiev.time.repository.CategoryRepository;
 import com.parpiiev.time.services.interfaces.CategoryService;
 import com.parpiiev.time.utils.dto.CategoryDTO;
-import com.parpiiev.time.utils.dto.UserDTO;
 import com.parpiiev.time.utils.dto.mappers.DtoMapper;
-import com.parpiiev.time.utils.validators.PatternMatcher;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +19,10 @@ import java.util.stream.Collectors;
 /**
  * Service class for Categories table
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Service
 public class CategoryServiceImpl implements CategoryService<CategoryDTO> {
 
-    private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
     private final DtoMapper<CategoryDTO, Category> dtoMapper;
     private final CategoryRepository categoryRepository;
 
@@ -48,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService<CategoryDTO> {
 
     @Override
     public boolean save(CategoryDTO categoryDto) {
-        boolean flag;
+
         if (categoryDto.getName() == null) {
             log.error("Invalid input data");
             throw new InvalidCategoryException("Category input data is not valid");
@@ -58,11 +54,10 @@ public class CategoryServiceImpl implements CategoryService<CategoryDTO> {
 
         if (getByName(categoryDto.getName()).isPresent()) {
             throw new CategoryAlreadyExistsException();
-        } else {
-            flag = true;
-            categoryRepository.save(category);
         }
-        return flag;
+
+        categoryRepository.save(category);
+        return true;
     }
 
     @Override

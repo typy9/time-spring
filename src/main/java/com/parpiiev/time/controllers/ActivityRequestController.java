@@ -7,8 +7,7 @@ import com.parpiiev.time.services.interfaces.UsersActivityService;
 import com.parpiiev.time.utils.dto.ActivityRequestDTO;
 import com.parpiiev.time.utils.dto.UsersActivityDTO;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -22,15 +21,13 @@ import java.util.stream.IntStream;
 
 import static com.parpiiev.time.controllers.Paths.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Controller
 public class ActivityRequestController {
 
-    private static final Logger log = LoggerFactory.getLogger(ActivityRequestController.class);
-
     private final ActivityRequestService<ActivityRequestDTO> activityRequestService;
     private final UsersActivityService<UsersActivityDTO> usersActivityService;
-
+    private static final String MODEL_ATTRIBUTE_REQUESTS = "requests";
 
     @GetMapping(ALL_REQUESTS_PAGE)
     public String listRequests(Model model,
@@ -55,7 +52,7 @@ public class ActivityRequestController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        model.addAttribute("requests", requests);
+        model.addAttribute(MODEL_ATTRIBUTE_REQUESTS, requests);
         model.addAttribute("activityRequestDTO", new ActivityRequestDTO());
 
         return ALL_REQUESTS_FILE;
@@ -69,10 +66,11 @@ public class ActivityRequestController {
         Optional<ActivityRequestDTO> request = activityRequestService.getById(id);
 
         if(request.isPresent()) {
-            request.get().setStatus(Status.DECLINED);
-            activityRequestService.update(request.get());
+
+            activityRequestService.decline(id);
+
             List<ActivityRequestDTO> requests = activityRequestService.getAll();
-            model.addAttribute("requests", requests);
+            model.addAttribute(MODEL_ATTRIBUTE_REQUESTS, requests);
         }
         return BACK_TO_ALL_REQUESTS_PAGE;
     }
@@ -90,7 +88,7 @@ public class ActivityRequestController {
             request.get().setStatus(Status.APPROVED);
             activityRequestService.update(request.get());
             List<ActivityRequestDTO> requests = activityRequestService.getAll();
-            model.addAttribute("requests", requests);
+            model.addAttribute(MODEL_ATTRIBUTE_REQUESTS, requests);
 
             UsersActivityDTO usersActivityDto = new UsersActivityDTO();
             usersActivityDto.setUser_id(request.get().getUser_id());

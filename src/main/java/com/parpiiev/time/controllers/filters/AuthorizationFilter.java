@@ -1,6 +1,7 @@
 package com.parpiiev.time.controllers.filters;
 
 import com.parpiiev.time.utils.dto.UserDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -14,10 +15,10 @@ import java.io.IOException;
 
 import static com.parpiiev.time.controllers.Paths.*;
 
+@Slf4j
 @Component
 @Order(1)
 public class AuthorizationFilter implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(AuthorizationFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

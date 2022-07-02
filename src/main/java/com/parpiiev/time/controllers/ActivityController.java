@@ -6,8 +6,7 @@ import com.parpiiev.time.services.interfaces.CategoryService;
 import com.parpiiev.time.utils.dto.ActivityDTO;
 import com.parpiiev.time.utils.dto.CategoryDTO;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -25,36 +24,19 @@ import java.util.stream.IntStream;
 
 import static com.parpiiev.time.controllers.Paths.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Controller
 public class ActivityController {
 
-    private static final Logger log = LoggerFactory.getLogger(ActivityController.class);
-
     private final ActivityService<ActivityDTO> activityService;
     private final CategoryService<CategoryDTO> categoryService;
-
-//    @GetMapping(ALL_ACTIVITIES_PAGE)
-//    public String showPage(Model model) {
-//        log.debug("Start ActivityController GET showPage");
-//
-//        List<CategoryDTO> category = new ArrayList<>();
-//        model.addAttribute("category", category);
-//        List<CategoryDTO> categories =  categoryService.getAll();
-//        model.addAttribute("categories", categories);
-//
-//        List<ActivityDTO> activities = activityService.getAll();
-//        model.addAttribute("activities", activities);
-//        model.addAttribute("activityDTO", new ActivityDTO());
-//
-//        return ALL_ACTIVITIES_FILE;
-//    }
+    private static final String MODEL_ATTRIBUTE_ACTIVITIES = "activities";
 
     @GetMapping(ALL_ACTIVITIES_PAGE)
     public String listActivities(Model model, HttpSession session,
                                  @RequestParam("page") Optional<Integer> page,
                                  @RequestParam("size") Optional<Integer> size,
-                                 @RequestParam(defaultValue = "id") Optional<String> sortBy,
+                                 @RequestParam(defaultValue = "id") String sortBy,
                                  @RequestParam(defaultValue = "") Optional<Integer> filterByCategory) {
 
         log.debug("Start ActivityController GET listActivities");
@@ -69,22 +51,15 @@ public class ActivityController {
             List<ActivityDTO> activities = filteredActivities
                     .stream()
                     .map(Optional::get).toList();
-            model.addAttribute("activities", activities);
+            model.addAttribute(MODEL_ATTRIBUTE_ACTIVITIES, activities);
             session.setAttribute("filterByCategory", filterByCategory.get());
         } else {
 
-            Page<ActivityDTO> activityPage;
-            if (sortBy.isPresent() && sortBy.get().equals("users")) {
-                activityPage = activityService
-                        .findPaginatedSortByUsers(PageRequest.of(currentPage - 1, pageSize));
-            } else {
-                activityPage = activityService
-                        .findPaginatedSorted(PageRequest.of(currentPage - 1, pageSize), sortBy.get());
-            }
+            Page<ActivityDTO> activityPage = getActivityDTOS(sortBy, currentPage, pageSize);
 
             List<ActivityDTO> activities = activityPage.getContent();
 
-            model.addAttribute("activities", activities);
+            model.addAttribute(MODEL_ATTRIBUTE_ACTIVITIES, activities);
             model.addAttribute("activityPage", activityPage);
 
             int totalPages = activityPage.getTotalPages();
@@ -117,7 +92,7 @@ public class ActivityController {
         if(activity.isPresent()) {
             activityService.delete(id);
             List<ActivityDTO> activities = activityService.getAll();
-            model.addAttribute("activities", activities);
+            model.addAttribute(MODEL_ATTRIBUTE_ACTIVITIES, activities);
         }
         return BACK_TO_ALL_ACTIVITIES_PAGE;
     }
@@ -131,7 +106,7 @@ public class ActivityController {
         if (bindingResult.hasErrors()) {
 
             List<ActivityDTO> activities =  activityService.getAll();
-            model.addAttribute("activities", activities);
+            model.addAttribute(MODEL_ATTRIBUTE_ACTIVITIES, activities);
             return ALL_ACTIVITIES_PAGE;
         }
 
@@ -144,7 +119,7 @@ public class ActivityController {
             return ALL_ACTIVITIES_PAGE;
         }
 
-        boolean isSaved = false;
+        boolean isSaved;
 
         try {
             activityDTO.setActivity_category_id(categoryId);
@@ -161,7 +136,7 @@ public class ActivityController {
         }
 
         List<ActivityDTO> activities =  activityService.getAll();
-        model.addAttribute("activities", activities);
+        model.addAttribute(MODEL_ATTRIBUTE_ACTIVITIES, activities);
         return BACK_TO_ALL_ACTIVITIES_PAGE;
     }
 
@@ -198,8 +173,15 @@ public class ActivityController {
         activityService.update(activityDTO);
 
         List<ActivityDTO> activities = activityService.getAll();
-        model.addAttribute("activities", activities);
+        model.addAttribute(MODEL_ATTRIBUTE_ACTIVITIES, activities);
         return BACK_TO_ALL_ACTIVITIES_PAGE;
     }
 
+    private Page<ActivityDTO> getActivityDTOS(String sortBy, int currentPage, int pageSize) {
+        if (sortBy.equals("users")) {
+            return activityService
+                    .findPaginatedSortByUsers(PageRequest.of(currentPage - 1, pageSize));
+        }
+        return activityService.findPaginatedSorted(PageRequest.of(currentPage - 1, pageSize), sortBy);
+    }
 }

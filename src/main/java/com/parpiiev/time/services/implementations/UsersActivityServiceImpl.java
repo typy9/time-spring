@@ -9,8 +9,7 @@ import com.parpiiev.time.services.interfaces.UsersActivityService;
 import com.parpiiev.time.utils.dto.UsersActivityDTO;
 import com.parpiiev.time.utils.dto.mappers.DtoMapper;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,11 +22,10 @@ import java.util.stream.Collectors;
 /**
  * Service class for UsersActivity table
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Service
 public class UsersActivityServiceImpl implements UsersActivityService<UsersActivityDTO> {
 
-    private final Logger log = LoggerFactory.getLogger(UsersActivityServiceImpl.class);
     private final UsersActivityRepository usersActivityRepository;
     private final DtoMapper<UsersActivityDTO, UsersActivity> dtoMapper;
 
@@ -59,7 +57,7 @@ public class UsersActivityServiceImpl implements UsersActivityService<UsersActiv
 
     @Override
     public boolean save(UsersActivityDTO usersActivityDTO) {
-        boolean flag;
+
         if (usersActivityDTO.getUser_id() <= 0
                 || usersActivityDTO.getActivity_id() <= 0
                 || usersActivityDTO.getTime() < 0) {
@@ -72,11 +70,9 @@ public class UsersActivityServiceImpl implements UsersActivityService<UsersActiv
         if (getByUserIdActivityId(usersActivity.getUser().getId(),
                 usersActivity.getActivity().getId()).isPresent()) {
             throw new UserAlreadyExistsException();
-        } else {
-            flag = true;
-            usersActivityRepository.save(usersActivity);
         }
-        return flag;
+        usersActivityRepository.save(usersActivity);
+        return true;
     }
 
     @Override

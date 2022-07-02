@@ -9,11 +9,4 @@ public class InvalidCategoryException extends RuntimeException{
         super(message);
     }
 
-    public InvalidCategoryException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public InvalidCategoryException(Throwable cause) {
-        super(cause);
-    }
 }

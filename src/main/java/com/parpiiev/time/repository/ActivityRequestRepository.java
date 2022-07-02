@@ -27,4 +27,5 @@ public interface ActivityRequestRepository extends JpaRepository<ActivityRequest
     @Transactional
     @Query("update ActivityRequest a set a.status=:status where a.request_id=:requestId")
     void updateRequestById(@Param(value = "requestId") int requestId, @Param(value = "status") Status status);
+
 }

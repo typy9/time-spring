@@ -6,8 +6,7 @@ import com.parpiiev.time.exceptions.request.RequestAlreadyExistsException;
 import com.parpiiev.time.services.interfaces.*;
 import com.parpiiev.time.utils.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -26,11 +25,10 @@ import java.util.stream.IntStream;
 
 import static com.parpiiev.time.controllers.Paths.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Controller
 public class UserMenuController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserMenuController.class);
 
     private final UserService<UserDTO> userService;
     private final ActivityService<ActivityDTO> activityService;

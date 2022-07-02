@@ -3,6 +3,7 @@ package com.parpiiev.time.controllers;
 import com.parpiiev.time.services.interfaces.UsersActivityService;
 import com.parpiiev.time.utils.dto.UsersActivityDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,9 @@ import java.util.stream.IntStream;
 
 import static com.parpiiev.time.controllers.Paths.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Controller
 public class UsersActivityController {
-
-    private static final Logger log = LoggerFactory.getLogger(UsersActivityController .class);
 
     private final UsersActivityService<UsersActivityDTO> usersActivityService;
 

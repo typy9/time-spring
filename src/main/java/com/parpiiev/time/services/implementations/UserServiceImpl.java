@@ -9,8 +9,7 @@ import com.parpiiev.time.utils.dto.UserDTO;
 import com.parpiiev.time.utils.dto.mappers.DtoMapper;
 import com.parpiiev.time.utils.validators.PatternMatcher;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,11 +22,10 @@ import java.util.stream.Collectors;
 /**
  * Service class for Users table
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Service
 public class UserServiceImpl implements UserService<UserDTO> {
 
-    private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final DtoMapper<UserDTO, User> dtoMapper;
     private final UserRepository userRepository;
 
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService<UserDTO> {
 
     @Override
     public boolean save(UserDTO userDto) {
-        boolean flag;
+
         if (userDto.getLogin() == null
                 || userDto.getPassword() == null
                 || userDto.getRole() == null) {
@@ -69,11 +67,10 @@ public class UserServiceImpl implements UserService<UserDTO> {
 
         if (getByLogin(user.getLogin()).isPresent()) {
             throw new UserAlreadyExistsException();
-        } else {
-            flag = true;
-            userRepository.save(user);
         }
-        return flag;
+        userRepository.save(user);
+
+        return true;
     }
 
     private User getUser(UserDTO userDto) {
@@ -124,16 +121,6 @@ public class UserServiceImpl implements UserService<UserDTO> {
 
         return userRepository.getUserRole(userDTO.getLogin(), userDTO.getPassword()).orElse(null);
 
-        //        User user = getUser(userDTO);
-//        String role;
-//
-//        try {
-//            role = userDao.getRole(user);
-//        } catch (DuplicateValueException e) {
-//            log.error(e.getMessage());
-//            throw new UserAlreadyExistsException(e.getMessage());
-//        }
-//        return role;
     }
 
     @Override

@@ -18,6 +18,8 @@ public interface ActivityRequestService<T> extends BaseService<T> {
 
     boolean delete(int id);
 
+    boolean decline(int id);
+
     List<Optional<T>> getAllByUserId(int id);
 
     Page<ActivityRequestDTO> findPaginated(Pageable pageable);

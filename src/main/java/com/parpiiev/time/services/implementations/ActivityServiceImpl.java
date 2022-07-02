@@ -3,7 +3,6 @@ package com.parpiiev.time.services.implementations;
 import com.parpiiev.time.exceptions.activity.ActivityAlreadyExistsException;
 import com.parpiiev.time.model.Activity;
 import com.parpiiev.time.exceptions.user.InvalidUserException;
-import com.parpiiev.time.model.User;
 import com.parpiiev.time.utils.projections.ActivityProjectionMapper;
 import com.parpiiev.time.repository.ActivityRepository;
 import com.parpiiev.time.services.interfaces.ActivityService;
@@ -11,8 +10,8 @@ import com.parpiiev.time.utils.dto.ActivityDTO;
 import com.parpiiev.time.utils.dto.mappers.DtoMapper;
 import com.parpiiev.time.utils.validators.PatternMatcher;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +22,9 @@ import java.util.stream.Collectors;
 /**
  * Service class for Activity table
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Service
 public class ActivityServiceImpl implements ActivityService<ActivityDTO> {
-
-    private final Logger log = LoggerFactory.getLogger(ActivityServiceImpl.class);
 
     private final ActivityRepository activityRepository;
     private final DtoMapper<ActivityDTO, Activity> dtoMapper;

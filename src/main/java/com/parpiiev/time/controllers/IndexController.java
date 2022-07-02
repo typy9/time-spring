@@ -3,6 +3,7 @@ package com.parpiiev.time.controllers;
 import com.parpiiev.time.services.interfaces.UserService;
 import com.parpiiev.time.utils.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,9 @@ import javax.servlet.http.HttpSession;
 
 import static com.parpiiev.time.controllers.Paths.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Controller
 public class IndexController {
-
-    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
     private final UserService<UserDTO> userService;
 

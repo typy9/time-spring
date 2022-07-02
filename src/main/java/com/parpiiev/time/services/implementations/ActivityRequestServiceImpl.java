@@ -4,13 +4,13 @@ import com.parpiiev.time.exceptions.request.InvalidRequestException;
 import com.parpiiev.time.exceptions.request.RequestAlreadyExistsException;
 import com.parpiiev.time.model.ActivityRequest;
 import com.parpiiev.time.exceptions.user.InvalidUserException;
+import com.parpiiev.time.model.Status;
 import com.parpiiev.time.repository.ActivityRequestRepository;
 import com.parpiiev.time.services.interfaces.ActivityRequestService;
 import com.parpiiev.time.utils.dto.ActivityRequestDTO;
 import com.parpiiev.time.utils.dto.mappers.DtoMapper;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,11 +23,9 @@ import java.util.stream.Collectors;
 /**
  * Service class for UsersActivity table
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 @Service
 public class ActivityRequestServiceImpl implements ActivityRequestService<ActivityRequestDTO> {
-
-    private final Logger log = LoggerFactory.getLogger(ActivityRequestServiceImpl.class);
 
     private final ActivityRequestRepository activityRequestRepository;
     private final DtoMapper<ActivityRequestDTO, ActivityRequest> dtoMapper;
@@ -60,7 +58,7 @@ public class ActivityRequestServiceImpl implements ActivityRequestService<Activi
 
     @Override
     public boolean save(ActivityRequestDTO activityRequestDTO) {
-        boolean flag;
+
         if (activityRequestDTO.getUser_id() <= 0
                 || activityRequestDTO.getActivity_id() <= 0
                 || activityRequestDTO.getStatus() == null) {
@@ -72,11 +70,10 @@ public class ActivityRequestServiceImpl implements ActivityRequestService<Activi
         if (getByUserIdActivityId(activityRequest.getUser().getId(),
                 activityRequest.getActivity().getId()).isPresent()) {
             throw new RequestAlreadyExistsException();
-        } else {
-            flag = true;
-            activityRequestRepository.save(activityRequest);
         }
-        return flag;
+        activityRequestRepository.save(activityRequest);
+
+        return true;
     }
 
     @Override
@@ -105,6 +102,13 @@ public class ActivityRequestServiceImpl implements ActivityRequestService<Activi
     public boolean delete(int id) {
         if (id <= 0) {return false;}
         activityRequestRepository.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public boolean decline(int id) {
+        if (id <= 0) {return false;}
+        activityRequestRepository.updateRequestById(id, Status.DECLINED);
         return true;
     }
 

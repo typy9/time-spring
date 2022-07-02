@@ -1,5 +1,6 @@
 package com.parpiiev.time.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.parpiiev.time.controllers.Paths.*;
 
+@Slf4j
 @Controller
 public class CustomErrorController implements ErrorController {
 
@@ -27,9 +29,11 @@ public class CustomErrorController implements ErrorController {
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
+                log.error(String.valueOf(HttpStatus.NOT_FOUND.value()));
                 return ERROR_FILE_404;
             }
             else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+                log.error(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
                 return ERROR_FILE_500;
             }
         }

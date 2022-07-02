@@ -4,7 +4,7 @@ import com.parpiiev.time.model.Status;
 import lombok.*;
 
 @Data
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@NoArgsConstructor @AllArgsConstructor
 public class ActivityRequestDTO {
 
     private int request_id;
