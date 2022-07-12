@@ -21,7 +21,7 @@ public interface ActivityService<T> extends BaseService<T> {
     Page<T> findPaginatedSorted(Pageable pageable, String sortBy);
     Page<T> findPaginated(Pageable pageable);
 
-    List<Optional<T>> getActivityByCategory_Id(int categoryId);
+    List<Optional<T>> getActivityByCategoryId(int categoryId);
 
     Page<T> findPaginatedSortByUsers(Pageable pageable);
 

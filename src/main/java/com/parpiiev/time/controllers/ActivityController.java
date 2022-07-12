@@ -47,7 +47,7 @@ public class ActivityController {
         if (filterByCategory.isPresent()) {
 
             List<Optional<ActivityDTO>> filteredActivities = activityService
-                    .getActivityByCategory_Id(filterByCategory.get());
+                    .getActivityByCategoryId(filterByCategory.get());
             List<ActivityDTO> activities = filteredActivities
                     .stream()
                     .map(Optional::get).toList();

@@ -16,9 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 /**
  * Service class for UsersActivity table
@@ -43,11 +44,11 @@ public class ActivityRequestServiceImpl implements ActivityRequestService<Activi
     public List<ActivityRequestDTO> getAll() {
         return activityRequestRepository.findAll().stream()
                 .map(dtoMapper::mapToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
-    public Optional<ActivityRequestDTO> getByUserIdActivityId(int userId, int activityId) {
+    public Optional<ActivityRequestDTO> getByUserIdAndActivityId(int userId, int activityId) {
 
         if (userId <= 0 || activityId <= 0) {
             return Optional.empty();
@@ -67,7 +68,7 @@ public class ActivityRequestServiceImpl implements ActivityRequestService<Activi
             throw new InvalidUserException("User input data is not valid");
         }
         ActivityRequest activityRequest = getActivityRequest(activityRequestDTO);
-        if (getByUserIdActivityId(activityRequest.getUser().getId(),
+        if (getByUserIdAndActivityId(activityRequest.getUser().getId(),
                 activityRequest.getActivity().getId()).isPresent()) {
             throw new RequestAlreadyExistsException();
         }
@@ -114,9 +115,12 @@ public class ActivityRequestServiceImpl implements ActivityRequestService<Activi
 
     @Override
     public List<Optional<ActivityRequestDTO>> getAllByUserId(int id) {
+        if (id <= 0) {
+            return Collections.emptyList();
+        }
         return activityRequestRepository.findAllByUserId(id)
                 .stream().map(x -> x.map(dtoMapper::mapToDto))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private ActivityRequest getActivityRequest(ActivityRequestDTO activityRequestDto) {

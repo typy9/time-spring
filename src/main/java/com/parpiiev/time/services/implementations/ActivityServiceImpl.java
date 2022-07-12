@@ -147,7 +147,7 @@ public class ActivityServiceImpl implements ActivityService<ActivityDTO> {
     }
 
     @Override
-    public List<Optional<ActivityDTO>> getActivityByCategory_Id(int categoryId) {
+    public List<Optional<ActivityDTO>> getActivityByCategoryId(int categoryId) {
         if(categoryId <= 0) {return null;}
         return activityRepository.getActivityByCategoryId(categoryId)
                 .stream()

@@ -6,8 +6,7 @@ import lombok.*;
  * JPA Projection Bean to retrieve data from a custom JPA query.
  */
 @Data
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor @ToString
+@AllArgsConstructor @NoArgsConstructor
 public class ActivityProjection {
 
     private int id;

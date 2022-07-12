@@ -4,16 +4,13 @@ import com.parpiiev.time.model.Activity;
 import com.parpiiev.time.model.Category;
 import com.parpiiev.time.repository.ActivityRepository;
 import com.parpiiev.time.repository.CategoryRepository;
-import com.parpiiev.time.services.interfaces.ActivityRequestService;
 import com.parpiiev.time.services.interfaces.ActivityService;
 import com.parpiiev.time.utils.dto.ActivityDTO;
-import com.parpiiev.time.utils.dto.CategoryDTO;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,9 +99,9 @@ class ActivityServiceImplIntegrationTest {
 
     @Test
     void testGetActivityByCategory_Id() {
-        assertNull( service.getActivityByCategory_Id(-1));
-        assertTrue( service.getActivityByCategory_Id(2).isEmpty());
-        assertEquals(3, service.getActivityByCategory_Id(1).size());
+        assertNull( service.getActivityByCategoryId(-1));
+        assertTrue( service.getActivityByCategoryId(2).isEmpty());
+        assertEquals(3, service.getActivityByCategoryId(1).size());
     }
 
     @Test

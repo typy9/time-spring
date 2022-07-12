@@ -5,8 +5,6 @@ import com.parpiiev.time.services.interfaces.UserService;
 import com.parpiiev.time.utils.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -27,6 +25,7 @@ import static com.parpiiev.time.controllers.Paths.*;
 public class UserController {
 
     private final UserService<UserDTO> userService;
+    private static final String USERS_ATTRIBUTE = "users";
 
 
     @GetMapping(ALL_USERS_PAGE)
@@ -52,8 +51,7 @@ public class UserController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-//        List<UserDTO> users = userService.getAll();
-        model.addAttribute("users", users);
+        model.addAttribute(USERS_ATTRIBUTE, users);
         model.addAttribute("userDTO", new UserDTO());
 
         return ALL_USERS_FILE;
@@ -67,7 +65,7 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             List<UserDTO> users = userService.getAll();
-            model.addAttribute("users", users);
+            model.addAttribute(USERS_ATTRIBUTE, users);
             return ALL_USERS_PAGE;
         }
 
@@ -94,7 +92,7 @@ public class UserController {
             model.addAttribute("userRegistered", true);
         }
         List<UserDTO> users = userService.getAll();
-        model.addAttribute("users", users);
+        model.addAttribute(USERS_ATTRIBUTE, users);
         return BACK_TO_ALL_USERS_PAGE;
     }
 
@@ -108,7 +106,7 @@ public class UserController {
         if(user.isPresent()) {
             userService.delete(id);
             List<UserDTO> users = userService.getAll();
-            model.addAttribute("users", users);
+            model.addAttribute(USERS_ATTRIBUTE, users);
         }
         return BACK_TO_ALL_USERS_PAGE;
     }
@@ -144,7 +142,7 @@ public class UserController {
             return BACK_TO_ALL_USERS_PAGE;
         }
         List<UserDTO> users = userService.getAll();
-        model.addAttribute("users", users);
+        model.addAttribute(USERS_ATTRIBUTE, users);
         return BACK_TO_ALL_USERS_PAGE;
     }
 }

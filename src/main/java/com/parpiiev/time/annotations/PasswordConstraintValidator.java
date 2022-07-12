@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 
+/**
+ * The password validation class used in custom ValidPassword annotation.
+ */
 public class PasswordConstraintValidator
         implements ConstraintValidator<ValidPassword, String> {
 

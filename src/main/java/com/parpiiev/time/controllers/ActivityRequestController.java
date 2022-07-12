@@ -119,7 +119,7 @@ public class ActivityRequestController {
         if (requestStatus.equals(Status.TOBEDELETED)){
 
             Optional<UsersActivityDTO> recordToDelete = usersActivityService
-                    .getByUserIdActivityId(userId, activityId);
+                    .getByUserIdAndActivityId(userId, activityId);
             recordToDelete.ifPresent(
                     usersActivityDTO -> usersActivityService.delete(usersActivityDTO.getId())
             );

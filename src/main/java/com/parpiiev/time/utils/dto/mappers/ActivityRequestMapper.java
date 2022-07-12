@@ -9,16 +9,20 @@ public class ActivityRequestMapper implements DtoMapper<ActivityRequestDTO, Acti
 
     @Override
     public ActivityRequestDTO mapToDto(ActivityRequest activityRequest) {
+
         ActivityRequestDTO dto = new ActivityRequestDTO();
+
         dto.setRequest_id(activityRequest.getRequest_id());
         dto.setUser_id(activityRequest.getUser().getId());
         dto.setActivity_id(activityRequest.getActivity().getId());
         dto.setStatus(activityRequest.getStatus());
+
         return dto;
     }
 
     @Override
     public ActivityRequest mapFromDto(ActivityRequestDTO activityRequestDto) {
+
         ActivityRequest activityRequest= new ActivityRequest();
 
         User user = new User();
@@ -30,6 +34,7 @@ public class ActivityRequestMapper implements DtoMapper<ActivityRequestDTO, Acti
         activityRequest.setActivity(activity);
 
         activityRequest.setStatus(activityRequestDto.getStatus());
+
         return activityRequest;
     }
 }

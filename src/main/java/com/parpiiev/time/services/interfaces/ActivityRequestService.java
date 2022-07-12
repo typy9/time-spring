@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ActivityRequestService<T> extends BaseService<T> {
 
-    Optional<T> getByUserIdActivityId(int userId, int activityId);
+    Optional<T> getByUserIdAndActivityId(int userId, int activityId);
 
     boolean save(T t);
 

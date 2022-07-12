@@ -46,7 +46,7 @@ public class UsersActivityServiceImpl implements UsersActivityService<UsersActiv
     }
 
     @Override
-    public Optional<UsersActivityDTO> getByUserIdActivityId(int userId, int activityId) {
+    public Optional<UsersActivityDTO> getByUserIdAndActivityId(int userId, int activityId) {
 
         if (userId <= 0 || activityId <= 0) {
             return Optional.empty();
@@ -67,7 +67,7 @@ public class UsersActivityServiceImpl implements UsersActivityService<UsersActiv
         }
         UsersActivity usersActivity = getUsersActivity(usersActivityDTO);
 
-        if (getByUserIdActivityId(usersActivity.getUser().getId(),
+        if (getByUserIdAndActivityId(usersActivity.getUser().getId(),
                 usersActivity.getActivity().getId()).isPresent()) {
             throw new UserAlreadyExistsException();
         }

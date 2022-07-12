@@ -1,16 +1,15 @@
 package com.parpiiev.time.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
 public enum Status {
     CREATED("CREATED"),
     APPROVED("APPROVED"),
     DECLINED("DECLINED"),
     TOBEDELETED("TOBEDELETED");
-    private final String value;
-    Status(String value) {
-        this.value = value;
-    }
-    public String getValue() {
-        return value;
-    }
 
+    @Getter
+    private final String value;
 }

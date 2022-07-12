@@ -1,16 +1,12 @@
 package com.parpiiev.time.model;
 
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-
 @Table(name="users")
 @Entity
 public class User {
-
 
     @Id
     @Column(name = "user_id")
@@ -127,7 +123,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User {" +
+        return "\n User {" +
                 "userId=" + userId +
                 ", name='" + username + '\'' +
                 ", login='" + login + '\'' +

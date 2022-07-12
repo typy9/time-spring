@@ -21,10 +21,6 @@ public class LogoutController {
 
         log.info("Start LogoutController GET getLogout");
 
-        request.getSession().removeAttribute("user");
-        request.getSession().removeAttribute("login");
-        request.getSession().removeAttribute("password");
-        request.getSession().removeAttribute("role");
         request.getSession().setAttribute("userInSystem", false);
         request.getSession().invalidate();
         sessionStatus.setComplete();
